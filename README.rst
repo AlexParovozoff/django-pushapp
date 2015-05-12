@@ -1,8 +1,8 @@
-django-push-notifications
+django-pushapp
 =========================
 
-.. image:: https://api.travis-ci.org/jleclanche/django-push-notifications.png
-	:target: https://travis-ci.org/jleclanche/django-push-notifications
+.. image:: https://api.travis-ci.org/jleclanche/django-pushapp.png
+	:target: https://travis-ci.org/jleclanche/django-pushapp
 
 A minimal Django app that implements Device models that can send messages through APNS and GCM.
 
@@ -31,17 +31,17 @@ Setup
 -----
 You can install the library directly from pypi using pip::
 
-	$ pip install django-push-notifications
+	$ pip install django-pushapp
 
 
 Edit your settings.py file::
 
 	INSTALLED_APPS = (
 		...
-		"push_notifications"
+		"pushapp"
 	)
 
-	PUSH_NOTIFICATIONS_SETTINGS = {
+	PUSHAPP_SETTINGS = {
 		"GCM_API_KEY": "<your api key>",
 		"APNS_CERTIFICATE": "/path/to/your/certificate.pem",
 	}
@@ -56,7 +56,7 @@ Native Django migrations are in use. `manage.py migrate` will install and migrat
 
 Settings list
 -------------
-All settings are contained in a PUSH_NOTIFICATIONS_SETTINGS dict.
+All settings are contained in a PUSHAPP_SETTINGS dict.
 
 In order to use GCM, you are required to include GCM_API_KEY.
 For APNS, you are required to include APNS_CERTIFICATE.
@@ -74,7 +74,7 @@ GCM and APNS services have slightly different semantics. The app tries to offer 
 
 ::
 
-	from push_notifications.models import APNSDevice, GCMDevice
+	from pushapp.models import APNSDevice, GCMDevice
 
 	device = GCMDevice.objects.get(registration_id=gcm_reg_id)
 	# The first argument will be sent as "message" to the intent extras Bundle
@@ -101,7 +101,7 @@ Sending messages in bulk
 ------------------------
 ::
 
-	from push_notifications.models import APNSDevice, GCMDevice
+	from pushapp.models import APNSDevice, GCMDevice
 
 	devices = GCMDevice.objects.filter(user__first_name="James")
 	devices.send_message("Happy name day!")
@@ -138,7 +138,7 @@ Exceptions
 Tastypie support
 ----------------
 
-The app includes tastypie-compatible resources in push_notifications.api. These can be used as-is, or as base classes
+The app includes tastypie-compatible resources in pushapp.api. These can be used as-is, or as base classes
 for more involved APIs.
 The following resources are available:
 
@@ -157,4 +157,4 @@ When registered, the APIs will show up at <api_root>/device/apns and <api_root>/
 Python 3 support
 ----------------
 
-django-push-notifications is fully compatible with Python 3.
+django-pushapp is fully compatible with Python 3.
