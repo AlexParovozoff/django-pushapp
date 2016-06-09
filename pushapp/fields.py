@@ -1,5 +1,6 @@
 import re
 import struct
+import django
 from django import forms
 from django.core.validators import RegexValidator
 from django.db import models, connection
@@ -26,7 +27,17 @@ class HexadecimalField(forms.CharField):
         super(HexadecimalField, self).__init__(*args, **kwargs)
 
 
-class HexIntegerField(six.with_metaclass(models.SubfieldBase, models.BigIntegerField)):
+if django.VERSION >= (1, 8):
+    BigIntegerField = models.BigIntegerField
+else:
+    @with_metaclass(models.SubfieldBase, skip_attrs=set([
+        'db_type',
+        'get_db_prep_save'
+        ]))
+    class BigIntegerField(models.BigIntegerField):  # noqa
+        pass
+
+class HexIntegerField(BigIntegerField):
     """
     This field stores a hexadecimal *string* of up to 64 bits as an unsigned integer
     on *all* backends including postgres.
